@@ -1,0 +1,66 @@
+version: "3"
+services:
+  server:
+    image: roberniro/contractb2b-server:1.0
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+      - mongodb
+      - kafka
+    networks:
+      - contractB2B-net
+    restart: always
+
+  view:
+    image: roberniro/contractb2b-view:1.0
+    ports:
+      - 80:3000
+    networks:
+      - contractB2B-net
+    restart: always
+
+  mysql:
+    image: roberniro/contractb2b-mysql:1.0
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: contractb2b
+    networks:
+      - contractB2B-net
+    restart: always
+
+  mongodb:
+    image: roberniro/contractb2b-mongodb:1.0
+    ports:
+      - 27018:27017
+    networks:
+      - contractB2B-net
+    restart: always
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_CREATE_TOPICS: "public:1:1"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    networks:
+      - contractB2B-net
+    restart: always
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - 2181:2181
+    networks:
+      - contractB2B-net
+    restart: always
+
+networks:
+  contractB2B-net:
+    driver: bridge
