@@ -46,7 +46,6 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 3.34.76.221
       KAFKA_ADVERTISED_PORT: 9092
-      KAFKA_CREATE_TOPICS: "public:1:1"
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_ZOOKEEPER_CONNECT: 3.34.76.221:2181
     networks:
